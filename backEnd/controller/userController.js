@@ -6,7 +6,6 @@ export const addUser = async (request, response) => {
     const user = request.body;
     console.log(user)
     const newUser = new User(user)
-
     try {
         await newUser.save();
         response.status(201).json(newUser)
@@ -27,11 +26,12 @@ export const getUser = async (req, res) => {
     }
 };
 
-export const  deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
     try {
-        console.log('DELETE USER',  req.params.id)
-        const delUser = await User.deleteOne({_id: req.params.id})
+        await User.deleteOne({ _id: req.body._id })
+        res.status(200).json({ success: true });
     } catch (error) {
         console.log(error)
+        res.status(500).send(error);
     }
 }

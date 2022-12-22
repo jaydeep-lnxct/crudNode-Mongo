@@ -12,7 +12,7 @@ export const addUser = async (data) => {
 export const getUser = async () => {
 
   try {
-   return await axios.get(`${url}/getuser`)
+    return await axios.get(`${url}/getuser`)
   }
   catch (error) {
     console.log("Error While Caling get user Api", error)
@@ -21,18 +21,17 @@ export const getUser = async () => {
 
 export const deleteUser = async (value) => {
   try {
-    console.log("Delete", value)
-    return await axios.delete(`${url}/${value}`)
+   await  axios.post(`${url}/delete`, { _id: value })
+
   } catch (error) {
     console.log("Error While Caling delete user Api", error)
   }
 };
 
-
 export const updateUser = async (value) => {
   try {
     console.log("updateUser")
   } catch (error) {
-    console.log("Error While Caling update user",error)
+    console.log("Error While Caling update user", error)
   }
 };
