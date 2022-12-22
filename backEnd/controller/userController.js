@@ -26,3 +26,12 @@ export const getUser = async (req, res) => {
         response.status(404).json({ message: error.message })
     }
 };
+
+export const  deleteUser = async (req, res) => {
+    try {
+        console.log('DELETE USER',  req.params.id)
+        const delUser = await User.deleteOne({_id: req.params.id})
+    } catch (error) {
+        console.log(error)
+    }
+}

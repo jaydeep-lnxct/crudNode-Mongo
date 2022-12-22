@@ -18,3 +18,21 @@ export const getUser = async () => {
     console.log("Error While Caling get user Api", error)
   }
 };
+
+export const deleteUser = async (value) => {
+  try {
+    console.log("Delete", value)
+    return await axios.delete(`${url}/${value}`)
+  } catch (error) {
+    console.log("Error While Caling delete user Api", error)
+  }
+};
+
+
+export const updateUser = async (value) => {
+  try {
+    console.log("updateUser")
+  } catch (error) {
+    console.log("Error While Caling update user",error)
+  }
+};

@@ -1,80 +1,84 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {
+  FormGroup,
+  FormControl,
+  Input,
+  FormLabel,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
+import { addUser, deleteUser, getUser, updateUser } from "./service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { addUserAction } from "./redux/reducer";
 
-import { FormGroup, FormControl, Input, FormLabel, styled, Button, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { addUser, getUser } from './service/api';
+import {
+  BrowserRouter,
+  Routes, //replaces "Switch" used till v5
+  Route,
+  Router,
+} from "react-router-dom";
 
+import Dashboard from "./dashboard";
+import InsertDataScreen from "./insertScreen";
 
-function App() {
-
-  const [user, setUser] = useState();
+const App = () => {
+  const [userData, setUserData] = useState([]);
   const defauultUserDetails = {
-    userName: '',
-    email: '',
-    password: ''
+    userName: "",
+    email: "",
+    password: "",
   };
 
+  const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(defauultUserDetails);
   const onChangeValue = (event) => {
     setUserDetails({ ...userDetails, [event.target.name]: event.target.value });
   };
 
-  const addUserHander = async () => {
-    await addUser(userDetails)
-  }
-
-  useEffect(()=> {
+  useEffect(() => {
     getAllUsers();
-  },[])
+  }, []);
 
-  const getAllUsers = async () =>{
-    await getUser();
-  }
+  const addUserHander = async () => {
+    const v = await addUser(userDetails);
+    if (v?.status === 201) {
+      setUserData([...userData, userDetails]);
+    }
+  };
+
+  const getAllUsers = async () => {
+    const users = await getUser();
+    setUserData(users?.data);
+    dispatch(addUserAction(users?.data));
+  };
+
+  // Delete user
+  const deleteUserHandler = async (value) => {
+    await deleteUser(value);
+    getAllUsers();
+  };
+
+  // Update user
+  const updateUerHandler = async (value) => {
+    await updateUser(value);
+  };
+
+  const userSelector = useSelector((state) => state?.value);
+
 
   return (
-    <div className="App">
-      <h1>Add User</h1>
-      <FormGroup style={{ display: 'flex', flexDirection: 'column', width: '50%', margin: 'auto' }}>
-        <FormControl>
-          <FormLabel>UserName</FormLabel>
-          <Input onChange={(e) => onChangeValue(e)} name="userName" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Email</FormLabel>
-          <Input onChange={(e) => onChangeValue(e)} name="email" />
-        </FormControl>
-
-        <FormControl>
-          <FormLabel>Password</FormLabel>
-          <Input onChange={(e) => onChangeValue(e)} name="password" />
-        </FormControl>
-        <Button variant="contained" onClick={() => addUserHander()}>Contained</Button>
-      </FormGroup>
-
-
-
-      <div>
-        <h1>Show User</h1>
-        <div style={{ marginTop: '30px' }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>User Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Password</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<InsertDataScreen />} />
+        <Route path="/result" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
