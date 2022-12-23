@@ -2,9 +2,12 @@
 
 import { response } from "express";
 import User from "../modal/userSchema.js";
+
+
 export const addUser = async (request, response) => {
     const user = request.body;
-    console.log(user)
+        
+
     const newUser = new User(user)
     try {
         await newUser.save();

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -10,11 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser, getUser, updateUser } from './service/api';
 import { addUserAction } from './redux/reducer';
 
-
 const Dashboard = () => {
   const dispatch = useDispatch();
   const userSelector = useSelector((state) => state?.value);
-  
+
   useEffect(() => {
     getAllUsers();
   }, []);
@@ -27,7 +27,7 @@ const Dashboard = () => {
   // Delete user
   const deleteUserHandler = async (value) => {
     await deleteUser(value);
-      getAllUsers();      
+    getAllUsers();
   }
 
   // Update user
@@ -37,16 +37,16 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1>Show User</h1>
-      <div style={{ marginTop: "30px", margin: "auto" }}>
+      <h1 style={{ textAlign: 'center', marginTop: "30px", marginBlock: "30px" }}> Show User</h1>
+      <div style={{ margin: "auto" }}>
         <Table>
           <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>User Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Password</TableCell>
-              <TableCell colSpan={2} align="center">
+            <TableRow style={{ background: '#000', color: "#fff" }}>
+              <TableCell style={{ color: "#fff" }}>ID</TableCell>
+              <TableCell style={{ color: "#fff" }}>User Name</TableCell>
+              <TableCell style={{ color: "#fff" }}>Email</TableCell>
+              <TableCell style={{ color: "#fff" }}>Password</TableCell>
+              <TableCell style={{ color: "#fff" }} colSpan={2} align="center">
                 Actions
               </TableCell>
             </TableRow>
@@ -60,16 +60,12 @@ const Dashboard = () => {
                   <TableCell align="left">{value.email}</TableCell>
                   <TableCell align="left">{value.password}</TableCell>
                   <TableCell
-                    align="left"
-                    onClick={() => deleteUserHandler(value._id)}
+                    align="center"
                   >
-                    delete
-                  </TableCell>
-                  <TableCell
-                    align="left"
-                    onClick={() => updateUerHandler(value._id)}
-                  >
-                    update
+                    <Button variant="outlined" color="error" onClick={() => deleteUserHandler(value._id)}>delete</Button>
+
+                    <Button style={{marginLeft:"24px"}} variant="outlined" size="medium" onClick={() => updateUerHandler(value._id)}>update</Button>
+
                   </TableCell>
                 </TableRow>
               );
