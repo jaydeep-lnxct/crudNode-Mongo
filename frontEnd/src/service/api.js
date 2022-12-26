@@ -21,17 +21,26 @@ export const getUser = async () => {
 
 export const deleteUser = async (value) => {
   try {
-   await  axios.post(`${url}/delete`, { _id: value })
-
+    await axios.post(`${url}/delete`, { _id: value })
   } catch (error) {
     console.log("Error While Caling delete user Api", error)
   }
 };
 
-export const updateUser = async (value) => {
+export const getSingleUser = async (id) => {
   try {
-    console.log("updateUser")
+    return await axios.get(`${url}/${id}`)
   } catch (error) {
-    console.log("Error While Caling update user", error)
+    console.log("Error While calling getSingleUser API")
+  }
+};
+
+
+export const editUser = async (value,id) => {
+  try {
+    console.log(value,id)
+    return axios.post(`${url}/${id}`, value)
+  } catch (error) {
+    console.log(error)
   }
 };
